@@ -9,6 +9,7 @@ Created on Wed Mar 20 09:30:56 2024
 import argparse
 import pandas as pd
 
+
 def parse_args():
     """
     Parse command line args
@@ -19,22 +20,19 @@ def parse_args():
         - args (Namespace): object containing parsed arguments.
     """
     parser = argparse.ArgumentParser(
-        description=(
-            'Modify cgppindel vcf file to include VAF,'
-        )
+        description=("Modify cgppindel vcf file to include VAF,")
     )
     parser.add_argument(
-        '-v', '--vcfs', type=str,
-        help='Panel filtered VCF(s) from which to generate excel workbook'
-    )
-    parser.add_argument(
-        '-o', '--output_filename',
-        help='Output VCF from script'
+        "-v",
+        "--vcfs",
+        type=str,
+        help="Panel filtered VCF(s) from which to generate excel workbook",
     )
 
     args = parser.parse_args()
 
     return args
+
 
 def read_vcf_df(input_vcf):
     """
@@ -50,12 +48,9 @@ def read_vcf_df(input_vcf):
             "FILTER", "INFO", "FORMAT", "NORMAL", "TUMOUR"]
 
     # read vcf records into df
-    vcf_df = pd.read_csv(input_vcf, sep="\t", comment='#', compression='infer',
+    vcf_df = pd.read_csv(input_vcf, sep="\t", comment="#", compression="infer",
                          names=cols, header=None)
-
     return vcf_df
-
-example_vcf = read_vcf_df('cgppindel_output/127995080-24037K0005-24NGSHO7-8128-F-96527893_vs_TA2_S59_L008_tumor.flagged.vcf.gz')
 
 
 def get_field_index(column, field):
@@ -68,7 +63,8 @@ def get_field_index(column, field):
 
     Returns: index of given field
     """
-    return list(column.apply(lambda x: x.split(':').index(field)))[0]
+    return list(column.apply(lambda x: x.split(":").index(field)))[0]
+
 
 def get_field_value(column, index):
     """
@@ -81,53 +77,70 @@ def get_field_value(column, index):
 
     Returns: series of values selected by index
     """
-    return column.apply(lambda x: int(x.split(':')[index]))
+    return column.apply(lambda x: int(x.split(":")[index]))
 
-NU_index = get_field_index(example_vcf['FORMAT'], 'NU')
-NU_value = get_field_value((example_vcf['TUMOUR']), NU_index)
-
-PU_index = get_field_index(example_vcf['FORMAT'], 'PU')
-PU_value = get_field_value((example_vcf['TUMOUR']), PU_index)
-test = NU_value + PU_value
 
 def generate_annotation_df(vcf_df):
-    
+    """
+    Creates an annotation df from the given vcf file, structure of the df
+    should look like this:
+
+   ----------------------------------------------------------------------------
+   CHROM | POS | ID | REF | ALT | NORMAL AF | TUMOUR AF | NORMAL DP | TUMOUR DP
+   ----------------------------------------------------------------------------
+   chr1  |12345|450f| AGT | TCA |     0     |  0.9999   |     0     |    6
+   ----------------------------------------------------------------------------
+   chr1  |54321|219b| AC  | TCA |   0.53    |   0.64    |     1     |    90
+   ----------------------------------------------------------------------------
+   chr2  |12345|699m| TA  |  G  |   0.666   |  0.8432   |    243    |    614
+   ----------------------------------------------------------------------------
+
+    Parameters
+    ----------
+    vcf_df : TYPE
+        dataframe of all variants from a vcf
+
+    Returns
+    -------
+    annotation_df : pd.DataFrame
+        Output dataframe with simmilar structure above
+
+    """
+
     # extract first 5 columnbs for the annotation file
-    annotation_df = vcf_df[['CHROM','POS','ID','REF','ALT']].copy()
-    
+    annotation_df = vcf_df[["CHROM", "POS", "ID", "REF", "ALT"]].copy()
+
     # get indices of required fields
-    pu_index = get_field_index(vcf_df['FORMAT'], 'PU')
-    nu_index = get_field_index(vcf_df['FORMAT'], 'NU')
-    pr_index = get_field_index(vcf_df['FORMAT'], 'PR')
-    nr_index = get_field_index(vcf_df['FORMAT'], 'NR')
-    
+    pu_index = get_field_index(vcf_df["FORMAT"], "PU")
+    nu_index = get_field_index(vcf_df["FORMAT"], "NU")
+    pr_index = get_field_index(vcf_df["FORMAT"], "PR")
+    nr_index = get_field_index(vcf_df["FORMAT"], "NR")
+
     # get values for given field from NORMAL and TUMOUR columns
-    format_columns = ['NORMAL', 'TUMOUR']
-    
+    format_columns = ["NORMAL", "TUMOUR"]
+
     # Create columns for Allele frequency
     for column in format_columns:
         pu_values = get_field_value(vcf_df[column], pu_index)
         nu_values = get_field_value(vcf_df[column], nu_index)
         pr_values = get_field_value(vcf_df[column], pr_index)
         nr_values = get_field_value(vcf_df[column], nr_index)
-    
+
         # calculate af & format as pct to 1dp
         af_values = (pu_values + nu_values) / (pr_values + nr_values)
         af_values = af_values.fillna(0)
-        af_pcts = af_values.apply(lambda x: '{:.1f}'.format(float(x * 100)))
-        
-        annotation_df[f'{column} AF'] = af_pcts
-    
+
+        annotation_df[f"{column} AF"] = af_values
+
     # Create columns for Read depth
     for column in format_columns:
         pr_values = get_field_value(vcf_df[column], pr_index)
         nr_values = get_field_value(vcf_df[column], nr_index)
-        
-        annotation_df[f'{column} DP'] = pr_values + nr_values
+
+        annotation_df[f"{column} DP"] = pr_values + nr_values
 
     return annotation_df
 
-example_annotation = generate_annotation_df(example_vcf)
 
 def main():
     """
@@ -138,11 +151,10 @@ def main():
     None.
     """
     args = parse_args()
-    
     vcf_df = read_vcf_df(args.vcfs)
     annotation_df = generate_annotation_df(vcf_df)
-    
-    
-    
-if __name__ == '__main__':
+    annotation_df.to_csv("annots.tsv", sep="\t", header=None, index=False)
+
+
+if __name__ == "__main__":
     main()

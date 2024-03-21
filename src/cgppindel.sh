@@ -60,6 +60,14 @@ main() {
     -normal /data/input/$normal_name \
     -outdir /data/out/cgppindel_output
 
+    # Add Allele frequency (AF) and Read depth (DP) onto cgppindel output file
+    python -v tsv_file_generator.py out/cgppindel_output/*.flagged.vcf.gz
+    bgzip annots.tsv
+    tabix -s1 -b2 -e2 annots.tsv.gz
+    bcftools annotate -a annots.tsv.gz -h annots.hdr -c CHROM,POS,ID,REF,ALT,+FORMAT/AF,+FORMAT/DP \
+    out/cgppindel_output/*.flagged.vcf.gz > TODO:_I_do_not_know_what_to_write_here.vcf
+
+    #TODO:I don't know how to add the bash tools bgzip, tabix and bcftools in the assetDepends 
 
     # Move vcf and index in specified runfolder to enable downstream use
     mv out/cgppindel_output/*.flagged.vcf.gz out/output_vcf
