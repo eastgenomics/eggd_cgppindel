@@ -5,9 +5,9 @@ Created on Wed Mar 20 09:30:56 2024
 
 @author: arun
 """
-
 import argparse
-import pandas as pd
+import csv
+from pysam import VariantFile
 
 
 def parse_args():
@@ -34,53 +34,7 @@ def parse_args():
     return args
 
 
-def read_vcf_df(input_vcf):
-    """
-    Reads vcf into pandas df, returns header as a list for output (bsvi) vcf
-
-    Args:
-        - input_vcf (file): vcf file to read in
-
-    Returns:
-        - vcf_df (df): df of variants from vcf
-    """
-    cols = ["CHROM", "POS", "ID", "REF", "ALT", "QUAL",
-            "FILTER", "INFO", "FORMAT", "NORMAL", "TUMOUR"]
-
-    # read vcf records into df
-    vcf_df = pd.read_csv(input_vcf, sep="\t", comment="#", compression="infer",
-                         names=cols, header=None)
-    return vcf_df
-
-
-def get_field_index(column, field):
-    """
-    Returns the index of a given field in a column with values separated by ':'
-
-    Args:
-        - column (pd.Series): df column to get field index
-        - field (str): field to get index of
-
-    Returns: index of given field
-    """
-    return list(column.apply(lambda x: x.split(":").index(field)))[0]
-
-
-def get_field_value(column, index):
-    """
-    Given a column with ':' separated values and index, return a
-    series of values with the value split by the index
-
-    Args:
-        - column (pd.Series): column to split and return from
-        - index (int): index to select
-
-    Returns: series of values selected by index
-    """
-    return column.apply(lambda x: int(x.split(":")[index]))
-
-
-def generate_annotation_df(vcf_df):
+def generate_annotation_df(vcf_file):
     """
     Creates an annotation df from the given vcf file, structure of the df
     should look like this:
@@ -106,40 +60,36 @@ def generate_annotation_df(vcf_df):
         Output dataframe with simmilar structure above
 
     """
+    data = []
+    
+    for variant in vcf_file.fetch():
+        # Setting up normal and tumour samples
+        normal = variant.samples['NORMAL']
+        tumour = variant.samples['TUMOUR']
+        
+        # Setting up Variant Allele Frequency
+        try:
+            normal_af = ((normal['PU'] + normal['NU'])/
+                         (normal['PR'] + normal['NR']))
+        except ZeroDivisionError:
+            normal_af = 0
 
-    # extract first 5 columnbs for the annotation file
-    annotation_df = vcf_df[["CHROM", "POS", "ID", "REF", "ALT"]].copy()
+        try:
+            tumour_af = ((tumour['PU'] + tumour['NU'])/
+                         (tumour['PR'] + tumour['NR']))
+        except ZeroDivisionError:
+            tumour_af = 0
 
-    # get indices of required fields
-    pu_index = get_field_index(vcf_df["FORMAT"], "PU")
-    nu_index = get_field_index(vcf_df["FORMAT"], "NU")
-    pr_index = get_field_index(vcf_df["FORMAT"], "PR")
-    nr_index = get_field_index(vcf_df["FORMAT"], "NR")
+        # Setting up Read Depth
+        normal_dp = normal['PR'] + normal['NR']
+        tumour_dp = tumour['PR'] + tumour['NR']
 
-    # get values for given field from NORMAL and TUMOUR columns
-    format_columns = ["NORMAL", "TUMOUR"]
-
-    # Create columns for Allele frequency
-    for column in format_columns:
-        pu_values = get_field_value(vcf_df[column], pu_index)
-        nu_values = get_field_value(vcf_df[column], nu_index)
-        pr_values = get_field_value(vcf_df[column], pr_index)
-        nr_values = get_field_value(vcf_df[column], nr_index)
-
-        # calculate af & format as pct to 1dp
-        af_values = (pu_values + nu_values) / (pr_values + nr_values)
-        af_values = af_values.fillna(0)
-
-        annotation_df[f"{column} AF"] = af_values
-
-    # Create columns for Read depth
-    for column in format_columns:
-        pr_values = get_field_value(vcf_df[column], pr_index)
-        nr_values = get_field_value(vcf_df[column], nr_index)
-
-        annotation_df[f"{column} DP"] = pr_values + nr_values
-
-    return annotation_df
+        # Generate vcf dataframe        
+        data.append([variant.chrom, variant.pos, variant.id,
+                     variant.ref, variant.alts[0],
+                     normal_af, tumour_af, normal_dp, tumour_dp])
+    
+    return data
 
 
 def main():
@@ -151,9 +101,11 @@ def main():
     None.
     """
     args = parse_args()
-    vcf_df = read_vcf_df(args.vcfs)
-    annotation_df = generate_annotation_df(vcf_df)
-    annotation_df.to_csv("annots.tsv", sep="\t", header=None, index=False)
+    vcf_df = VariantFile(args.vcfs)
+    annotation_data = generate_annotation_df(vcf_df)
+    with open('annots.tsv', 'w', newline="") as f:
+        writer = csv.writer(f, delimiter='\t')
+        writer.writerows(annotation_data)
 
 
 if __name__ == "__main__":
