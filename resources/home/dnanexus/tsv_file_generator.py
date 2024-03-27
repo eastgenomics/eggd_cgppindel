@@ -61,21 +61,21 @@ def generate_annotation_df(vcf_file):
 
     """
     data = []
-    
+
     for variant in vcf_file.fetch():
         # Setting up normal and tumour samples
         normal = variant.samples['NORMAL']
         tumour = variant.samples['TUMOUR']
-        
+
         # Setting up Variant Allele Frequency
         try:
-            normal_af = ((normal['PU'] + normal['NU'])/
+            normal_af = ((normal['PU'] + normal['NU']) /
                          (normal['PR'] + normal['NR']))
         except ZeroDivisionError:
             normal_af = 0
 
         try:
-            tumour_af = ((tumour['PU'] + tumour['NU'])/
+            tumour_af = ((tumour['PU'] + tumour['NU']) /
                          (tumour['PR'] + tumour['NR']))
         except ZeroDivisionError:
             tumour_af = 0
@@ -84,11 +84,11 @@ def generate_annotation_df(vcf_file):
         normal_dp = normal['PR'] + normal['NR']
         tumour_dp = tumour['PR'] + tumour['NR']
 
-        # Generate vcf dataframe        
+        # Generate vcf dataframe
         data.append([variant.chrom, variant.pos, variant.id,
                      variant.ref, variant.alts[0],
                      normal_af, tumour_af, normal_dp, tumour_dp])
-    
+
     return data
 
 
@@ -103,7 +103,7 @@ def main():
     args = parse_args()
     vcf_df = VariantFile(args.vcfs)
     annotation_data = generate_annotation_df(vcf_df)
-    with open('annots.tsv', 'w', newline="") as f:
+    with open('annots.tsv', 'w', newline="", encoding="utf-8") as f:
         writer = csv.writer(f, delimiter='\t')
         writer.writerows(annotation_data)
 
