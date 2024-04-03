@@ -24,9 +24,9 @@ def parse_args():
     )
     parser.add_argument(
         "-v",
-        "--vcfs",
+        "--vcf_file",
         type=str,
-        help="Panel filtered VCF(s) from which to generate excel workbook",
+        help="cgppindel VCF",
     )
 
     args = parser.parse_args()
@@ -51,13 +51,13 @@ def generate_annotation_df(vcf_file):
 
     Parameters
     ----------
-    vcf_df : TYPE
+    vcf_file : VariantFile
         dataframe of all variants from a vcf
 
     Returns
     -------
-    annotation_df : pd.DataFrame
-        Output dataframe with simmilar structure above
+    annotation_df : list
+        Output list of lists with simmilar structure above
 
     """
     data = []
@@ -86,7 +86,7 @@ def generate_annotation_df(vcf_file):
 
         # Generate vcf dataframe
         data.append([variant.chrom, variant.pos, variant.id,
-                     variant.ref, variant.alts[0],
+                     variant.ref, ", ".join(variant.alts),
                      normal_af, tumour_af, normal_dp, tumour_dp])
 
     return data
@@ -101,8 +101,8 @@ def main():
     None.
     """
     args = parse_args()
-    vcf_df = VariantFile(args.vcfs)
-    annotation_data = generate_annotation_df(vcf_df)
+    vcf_file = VariantFile(args.vcf_file)
+    annotation_data = generate_annotation_df(vcf_file)
     with open('annots.tsv', 'w', newline="", encoding="utf-8") as f:
         writer = csv.writer(f, delimiter='\t')
         writer.writerows(annotation_data)
