@@ -34,7 +34,7 @@ def parse_args():
     return args
 
 
-def generate_annotation_df(vcf_file):
+def generate_annotation_data(vcf_file):
     """
     Creates an annotation df from the given vcf file, structure of the df
     should look like this:
@@ -102,7 +102,7 @@ def main():
     """
     args = parse_args()
     vcf_file = VariantFile(args.vcf_file)
-    annotation_data = generate_annotation_df(vcf_file)
+    annotation_data = generate_annotation_data(vcf_file)
     with open('annots.tsv', 'w', newline="", encoding="utf-8") as f:
         writer = csv.writer(f, delimiter='\t')
         writer.writerows(annotation_data)
