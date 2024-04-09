@@ -204,7 +204,15 @@
     "file": "src/cgppindel.sh",
     "distribution": "Ubuntu",
     "release": "16.04",
-    "version": "1"
+    "version": "1",
+    "assetDepends": [
+      {
+        "name": "htslib",
+        "project": "project-Fkb6Gkj433GVVvj73J7x8KbV",
+        "folder": "/app_assets/htslib/htslib_v1.15.0",
+        "version": "1.15.0"
+      }
+    ]
   },
   "access": {
     "allProjects":"UPLOAD",
