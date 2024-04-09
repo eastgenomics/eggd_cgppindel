@@ -60,7 +60,7 @@ def generate_annotation_data(vcf_file):
         Output list of lists with similar structure above
 
     """
-    data = []
+    annotation_data = []
 
     for variant in vcf_file.fetch():
         # Setting up normal and tumour samples
@@ -85,11 +85,11 @@ def generate_annotation_data(vcf_file):
         tumour_dp = tumour['PR'] + tumour['NR']
 
         # Generate vcf dataframe
-        data.append([variant.chrom, variant.pos, variant.id,
+        annotation_data.append([variant.chrom, variant.pos, variant.id,
                      variant.ref, ", ".join(variant.alts),
                      normal_af, tumour_af, normal_dp, tumour_dp])
 
-    return data
+    return annotation_data
 
 
 def main():
