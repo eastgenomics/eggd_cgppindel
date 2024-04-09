@@ -56,8 +56,8 @@ def generate_annotation_df(vcf_file):
 
     Returns
     -------
-    annotation_df : list
-        Output list of lists with simmilar structure above
+    annotation_data : list
+        Output list of lists with similar structure above
 
     """
     data = []
