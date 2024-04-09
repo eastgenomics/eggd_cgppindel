@@ -69,8 +69,6 @@ main() {
     bcftools annotate -a annots.tsv.gz -h annots.hdr -c CHROM,POS,ID,REF,ALT,+FORMAT/AF,+FORMAT/DP \
     "$vcf" > "$basename.af.vcf.gz"
 
-    #TODO:I don't know how to add the bash tools bgzip, tabix and bcftools in the assetDepends 
-
     # Move vcf and index in specified runfolder to enable downstream use
     mv out/cgppindel_output/*.flagged.vcf.gz out/output_vcf
     mv out/cgppindel_output/*.flagged.vcf.gz.tbi out/vcf_index
