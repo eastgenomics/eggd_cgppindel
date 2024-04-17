@@ -61,7 +61,7 @@ main() {
     -outdir /data/out/cgppindel_output
 
     # Add Allele frequency (AF) and Read depth (DP) onto cgppindel output file
-    vcf=$(find out/cgppindel_out -type f -name "*.vcf.gz" )
+    vcf=$(find out/cgppindel_output -type f -name "*.vcf.gz")
     basename=$(basename "$(basename "$vcf" .gz)" .vcf)
     python tsv_file_generator.py -v "$vcf" 
     bgzip annots.tsv
@@ -72,6 +72,9 @@ main() {
     # Move vcf and index in specified runfolder to enable downstream use
     mv out/cgppindel_output/*.flagged.vcf.gz out/output_vcf
     mv out/cgppindel_output/*.flagged.vcf.gz.tbi out/vcf_index
+
+    # Move vcf file with VAF in speified folder
+    mv $basename.af.vcf.gz out/output_vcf_with_vaf
 
     # Move all .out and .err to a temporary folder
     mv out/cgppindel_output/logs/*.err temp_logs
