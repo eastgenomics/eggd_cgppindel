@@ -61,7 +61,7 @@ main() {
     -outdir /data/out/cgppindel_output
 
     # Add Allele frequency (AF) and Read depth (DP) onto cgppindel output file
-    vcf=$(find . -type f -name "*.vcf.gz" )
+    vcf=$(find out/cgppindel_out -type f -name "*.vcf.gz" )
     basename=$(basename "$(basename "$vcf" .gz)" .vcf)
     python tsv_file_generator.py -v "$vcf" 
     bgzip annots.tsv

@@ -2,7 +2,7 @@
   "name": "cgppindel_v1.1.0",
   "title": "cgppindel_v1.1.0",
   "summary": "cgppindel app for DNAnexus",
-  "dxapi": "1.1.0",
+  "dxapi": "1.0.0",
   "properties": {
     "githubRelease": "v1.1.0"
   },

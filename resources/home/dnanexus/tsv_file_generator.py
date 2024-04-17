@@ -36,18 +36,11 @@ def parse_args():
 
 def generate_annotation_data(vcf_file):
     """
-    Creates an annotation df from the given vcf file, structure of the df
-    should look like this:
+    Creates an list of lists from the given vcf file, each list has the
+    following elements in the specified order
+    
+    [CHROM, POS, ID, REF, ALT, NORMAL AF, TUMOUR AF, NORMAL DP, TUMOUR DP]
 
-   ----------------------------------------------------------------------------
-   CHROM | POS | ID | REF | ALT | NORMAL AF | TUMOUR AF | NORMAL DP | TUMOUR DP
-   ----------------------------------------------------------------------------
-   chr1  |12345|450f| AGT | TCA |     0     |  0.9999   |     0     |    6
-   ----------------------------------------------------------------------------
-   chr1  |54321|219b| AC  | TCA |   0.53    |   0.64    |     1     |    90
-   ----------------------------------------------------------------------------
-   chr2  |12345|699m| TA  |  G  |   0.666   |  0.8432   |    243    |    614
-   ----------------------------------------------------------------------------
 
     Parameters
     ----------
