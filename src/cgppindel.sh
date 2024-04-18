@@ -22,6 +22,7 @@ main() {
     mkdir -p out/output_vcf
     mkdir -p out/vcf_index
     mkdir -p out/output_log
+    mkdir -p out/output_vcf_with_vaf
     mkdir temp_logs
 
     # Make the output directory writeable for the app to work.

@@ -195,8 +195,8 @@
     },
     {
       "name": "output_vcf_with_vaf",
-      "label": "array of cgppindel output files",
-      "class": "array:file",
+      "label": "cgppindel output with vaf",
+      "class": "file",
       "patterns": [
         "*"
       ],
