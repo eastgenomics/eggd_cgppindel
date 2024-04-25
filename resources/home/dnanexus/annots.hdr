@@ -1,2 +1,0 @@
-##FORMAT=<ID=AF,Number=1,Type=Float,Description="Allele frequency">
-##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read depth">

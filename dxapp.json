@@ -212,8 +212,8 @@
     "interpreter": "bash",
     "file": "src/cgppindel.sh",
     "distribution": "Ubuntu",
-    "release": "16.04",
-    "version": "1",
+    "release": "20.04",
+    "version": "0",
     "assetDepends": [
       {
         "name": "htslib",
