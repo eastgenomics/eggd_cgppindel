@@ -70,14 +70,19 @@ main() {
     bgzip annots.tsv
     tabix -s1 -b2 -e2 annots.tsv.gz
     bcftools annotate -a annots.tsv.gz -h /annots.hdr -c CHROM,POS,ID,REF,ALT,+FORMAT/AF,+FORMAT/DP \
-    "$vcf" > "$basename.af.vcf"
+    "$vcf" > "$basename.tmp.af.vcf"
+
+    # Remove variants less than 2 bp
+    bcftools view -i 'INFO/LEN > 2' "$basename.tmp.af.vcf" > "$basename.af.vcf"
+    bgzip "$basename.af.vcf"
+
 
     # Move vcf and index in specified runfolder to enable downstream use
     mv out/cgppindel_output/*.flagged.vcf.gz out/output_vcf
     mv out/cgppindel_output/*.flagged.vcf.gz.tbi out/vcf_index
 
     # Move vcf file with VAF in speified folder
-    mv $basename.af.vcf out/output_vcf_with_vaf
+    mv $basename.af.vcf.gz out/output_vcf_with_vaf
 
     # Move all .out and .err to a temporary folder
     mv out/cgppindel_output/logs/*.err temp_logs
