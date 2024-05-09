@@ -1,7 +1,11 @@
 #!/bin/bash
 # cgppindel 1.1.0
 
-set -e -x -o pipefail
+set -exo pipefail
+
+# set frequency of instance usage in logs to 30 seconds
+kill $(ps aux | grep pcp-dstat | head -n1 | awk '{print $2}')
+/usr/bin/dx-dstat 30
 
 # Install all python packages from this app
 sudo -H python3 -m pip install --no-index --no-deps packages/*
