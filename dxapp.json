@@ -1,6 +1,6 @@
 {
-  "name": "cgppindel",
-  "title": "cgppindel",
+  "name": "eggd_cgppindel",
+  "title": "eggd_cgppindel",
   "summary": "cgppindel app for DNAnexus",
   "dxapi": "1.0.0",
   "version": "1.1.0",
@@ -215,6 +215,7 @@
     "distribution": "Ubuntu",
     "release": "20.04",
     "version": "0",
+    "headJobOnDemand": true,
     "assetDepends": [
       {
         "name": "htslib",

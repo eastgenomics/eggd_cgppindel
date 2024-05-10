@@ -3,10 +3,6 @@
 
 set -exo pipefail
 
-# set frequency of instance usage in logs to 30 seconds
-kill $(ps aux | grep pcp-dstat | head -n1 | awk '{print $2}')
-/usr/bin/dx-dstat 30
-
 # Install all python packages from this app
 sudo -H python3 -m pip install --no-index --no-deps packages/*
 
@@ -76,7 +72,7 @@ main() {
     bcftools annotate -a annots.tsv.gz -h /annots.hdr -c CHROM,POS,ID,REF,ALT,+FORMAT/AF,+FORMAT/DP \
     "$vcf" > "$basename.tmp.af.vcf"
 
-    # Remove variants less than 2 bp
+    # Remove variants that are smaller than or equal to 2 bp in length
     bcftools view -i 'INFO/LEN > 2' "$basename.tmp.af.vcf" > "$basename.af.vcf"
     bgzip "$basename.af.vcf"
 
