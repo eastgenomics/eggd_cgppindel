@@ -1,8 +1,10 @@
 #!/bin/bash
-# cgppindel 1.0.0
+# cgppindel 1.1.0
 
-set -e -x -o pipefail
+set -exo pipefail
 
+# Install all python packages from this app
+sudo -H python3 -m pip install --no-index --no-deps packages/*
 
 main() {
 
@@ -22,6 +24,7 @@ main() {
     mkdir -p out/output_vcf
     mkdir -p out/vcf_index
     mkdir -p out/output_log
+    mkdir -p out/output_vcf_with_vaf
     mkdir temp_logs
 
     # Make the output directory writeable for the app to work.
@@ -60,10 +63,26 @@ main() {
     -normal /data/input/$normal_name \
     -outdir /data/out/cgppindel_output
 
+    # Add Allele frequency (AF) and Read depth (DP) onto cgppindel output file
+    vcf=$(find out/cgppindel_output -type f -name "*.vcf.gz")
+    basename=$(basename "$(basename "$vcf" .gz)" .vcf)
+    python3 /tsv_file_generator.py -v "$vcf" 
+    bgzip annots.tsv
+    tabix -s1 -b2 -e2 annots.tsv.gz
+    bcftools annotate -a annots.tsv.gz -h /annots.hdr -c CHROM,POS,ID,REF,ALT,+FORMAT/AF,+FORMAT/DP \
+    "$vcf" > "$basename.tmp.af.vcf"
+
+    # Remove variants that are smaller than or equal to 2 bp in length
+    bcftools view -i 'INFO/LEN > 2' "$basename.tmp.af.vcf" > "$basename.af.vcf"
+    bgzip "$basename.af.vcf"
+
 
     # Move vcf and index in specified runfolder to enable downstream use
     mv out/cgppindel_output/*.flagged.vcf.gz out/output_vcf
     mv out/cgppindel_output/*.flagged.vcf.gz.tbi out/vcf_index
+
+    # Move vcf file with VAF in speified folder
+    mv $basename.af.vcf.gz out/output_vcf_with_vaf
 
     # Move all .out and .err to a temporary folder
     mv out/cgppindel_output/logs/*.err temp_logs
