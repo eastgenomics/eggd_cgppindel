@@ -28,7 +28,7 @@
         "*fa",
         "*fa.gz"
       ],
-      "default": {"$dnanexus_link": "file-Fy4gjFj41zgGjKJ85FYYPX4q"},
+      "default": {"$dnanexus_link": "file-GjPxXq84qv8xz3ZV1jFq6z3g"},
       "help": "Reference genome file *.fa[.gz]"
     },
     {
@@ -39,7 +39,7 @@
       "patterns": [
         "*bed.gz","*bed"
       ],
-      "default": {"$dnanexus_link": "file-Fz0Q2GQ41zgB8BK7143y65Q1"},
+      "default": {"$dnanexus_link": "file-GjBQ30Q4qv8bQG728fZ81FbF"},
       "help": "Tabix indexed simple/satellite repeats."
     },
     {
@@ -50,7 +50,7 @@
       "patterns": [
         "*fai"
       ],
-      "default": {"$dnanexus_link": "file-FyFGvzQ41zgBq7xf4Gy9Q28g"},
+      "default": {"$dnanexus_link": "file-GjPxp3Q4qv8Vk76xFVjfyPgJ"},
       "help": "Reference genome index file"
     },
     {
@@ -61,7 +61,7 @@
       "patterns": [
         "*bed.gz.tbi","*bed.tbi"
       ],
-      "default": {"$dnanexus_link": "file-Fz0Q2Kj41zg0Fgk4G70P9P1X"},
+      "default": {"$dnanexus_link": "file-GjBQ30Q4qv8kykJV7xxxf7z6"},
       "help": "Tabix indexed simple/satellite repeats index file."
     },
     {
@@ -72,7 +72,7 @@
       "patterns": [
         "*"
       ],
-      "default": {"$dnanexus_link": "file-FybyxV841zgB8v1y3fFbFB0G"},
+      "default": {"$dnanexus_link": "file-GjBQ30Q4qv8xv4PB054qYFfX"},
       "help": "Tabix indexed coding gene footprints."
     },
     {
@@ -83,7 +83,7 @@
       "patterns": [
         "*gff3.gz","gff3.gz.tbi"
       ],
-      "default": {"$dnanexus_link": "file-Fz8Q0vj41zg6j03fP1vbvfFp"},
+      "default": {"$dnanexus_link": "file-GjBQb084qv8jGpk4GvJQPZx0"},
       "help": "Tabix indexed gff3 of unmatched normal panel"
     },
     {
@@ -142,7 +142,7 @@
       "patterns": [
         "*bam"
       ],
-      "default": {"$dnanexus_link": "file-Fy9BXxQ40vjGfxP46Jb78Xf1"},
+      "default": {"$dnanexus_link": "file-GjQGgXQ4qv8QF2FFVqYQJj5J"},
       "help": "Normal BAM"
     },
     {
@@ -153,7 +153,7 @@
       "patterns": [
         "*bai"
       ],
-      "default": {"$dnanexus_link": "file-Fy9BXxQ40vj7qPJq1Kppjx0F"},
+      "default": {"$dnanexus_link": "file-GjQGjqj4qv8qyZ97xj57vjVq"},
       "help": "Normal BAM index"
     }
   ],
