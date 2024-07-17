@@ -215,6 +215,9 @@
       }
     ]
   },
+  "developers":[
+    "org-emee_1"
+  ],
   "access": {
     "allProjects":"UPLOAD",
     "network": [
@@ -222,6 +225,9 @@
     ],
     "project": "CONTRIBUTE"
   },
+  "authorizedUsers": [
+    "org-emee_1"
+  ],
   "regionalOptions": {
     "aws:eu-central-1": {
       "systemRequirements": {
