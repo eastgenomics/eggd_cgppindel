@@ -3,9 +3,9 @@
   "title": "eggd_cgppindel",
   "summary": "cgppindel app for DNAnexus",
   "dxapi": "1.0.0",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "properties": {
-    "githubRelease": "v1.1.0"
+    "githubRelease": "v1.2.0"
   },
   "inputSpec": [
     {
@@ -16,7 +16,6 @@
       "patterns": [
         "*tar.gz"
       ],
-      "default": {"$dnanexus_link": "file-Fz0KxFj4KB7fxxZ06vy2B2P3"},
       "help": "cgppindel image tar"
     },
     {
@@ -28,7 +27,6 @@
         "*fa",
         "*fa.gz"
       ],
-      "default": {"$dnanexus_link": "file-GjPxXq84qv8xz3ZV1jFq6z3g"},
       "help": "Reference genome file *.fa[.gz]"
     },
     {
@@ -39,7 +37,6 @@
       "patterns": [
         "*bed.gz","*bed"
       ],
-      "default": {"$dnanexus_link": "file-GjBQ30Q4qv8bQG728fZ81FbF"},
       "help": "Tabix indexed simple/satellite repeats."
     },
     {
@@ -50,7 +47,6 @@
       "patterns": [
         "*fai"
       ],
-      "default": {"$dnanexus_link": "file-GjPxp3Q4qv8Vk76xFVjfyPgJ"},
       "help": "Reference genome index file"
     },
     {
@@ -61,7 +57,6 @@
       "patterns": [
         "*bed.gz.tbi","*bed.tbi"
       ],
-      "default": {"$dnanexus_link": "file-GjBQ30Q4qv8kykJV7xxxf7z6"},
       "help": "Tabix indexed simple/satellite repeats index file."
     },
     {
@@ -72,7 +67,6 @@
       "patterns": [
         "*"
       ],
-      "default": {"$dnanexus_link": "file-GjBQ30Q4qv8xv4PB054qYFfX"},
       "help": "Tabix indexed coding gene footprints."
     },
     {
@@ -83,7 +77,6 @@
       "patterns": [
         "*gff3.gz","gff3.gz.tbi"
       ],
-      "default": {"$dnanexus_link": "file-GjBQb084qv8jGpk4GvJQPZx0"},
       "help": "Tabix indexed gff3 of unmatched normal panel"
     },
     {
@@ -111,7 +104,6 @@
       "patterns": [
         "*.lst"
       ],
-      "default": {"$dnanexus_link": "file-Fz8xvQj41zgGg10ZJzx8Qz53"},
       "help": "VCF filter rules file"
     },
     {
@@ -142,7 +134,6 @@
       "patterns": [
         "*bam"
       ],
-      "default": {"$dnanexus_link": "file-GjQGgXQ4qv8QF2FFVqYQJj5J"},
       "help": "Normal BAM"
     },
     {
@@ -153,7 +144,6 @@
       "patterns": [
         "*bai"
       ],
-      "default": {"$dnanexus_link": "file-GjQGjqj4qv8qyZ97xj57vjVq"},
       "help": "Normal BAM index"
     }
   ],
