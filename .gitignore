@@ -13,6 +13,7 @@ results/
 output/
 output_files/
 results/
+out/
 
 # Ignore any temporary files created during execution
 tmp/
@@ -49,3 +50,8 @@ local.config
 *.gzi
 *.lst
 *.tbi
+cgppindel_id
+docker_image
+
+# Ignore folders with inputs
+downloaded_inputs/
