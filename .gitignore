@@ -37,3 +37,15 @@ local.config
 .vscode/
 *.swp
 *~
+
+# Ignore input files
+*.bam
+*.bai
+*.fa
+*.fai
+*.tar 
+*.bed
+*.gz
+*.gzi
+*.lst
+*.tbi
