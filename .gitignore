@@ -1,0 +1,39 @@
+# Ignore the Nextflow log files
+.nextflow*
+.nextflow.log
+.nextflow.trace
+*.log*
+*.trace
+
+# Ignore the work directory where Nextflow executes processes
+work/
+
+# Ignore result directories
+results/
+output/
+output_files/
+results/
+
+# Ignore any temporary files created during execution
+tmp/
+*.tmp
+
+# Ignore parameter files
+*.params
+
+# Ignore metadata files
+.metadata/
+
+# Ignore local configuration files
+local.config
+*.local
+
+# Ignore sensitive files
+*.key
+*.pem
+*.enc
+
+# Ignore directories and files specific to your IDE
+.vscode/
+*.swp
+*~
