@@ -145,6 +145,14 @@
         "*bai"
       ],
       "help": "Normal BAM index"
+    },
+    {
+      "name": "exclude",
+      "label": "Exclude contigs",
+      "class": "string",
+      "default": "",
+      "optional": true,
+      "help": "Comma separated list of contigs to exclude from analysis"
     }
   ],
   "outputSpec": [

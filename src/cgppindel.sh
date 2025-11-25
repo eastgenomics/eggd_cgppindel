@@ -17,6 +17,7 @@ main() {
     echo "Value of filter: '$filter'"
     echo "Value of tumour: '$tumour'"
     echo "Value of normal: '$normal'"
+    echo "Value of exclude: '$exclude'"
     
     # Create input/output directories
     mkdir input
@@ -34,6 +35,13 @@ main() {
 
     #Add all inputs in the same folder to enable indeces to be found.
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ~/input
+
+    # Make option where exclude provided
+    #if [ -z "$exclude" ]; then
+    #    exclude=""
+    #else
+    #    exclude="-exclude '$exclude'"
+    #fi
 
     # Unzip fasta reference
     gzip -d ~/input/$reference_name
@@ -61,6 +69,7 @@ main() {
     -filter /data/input/$filter_name \
     -tumour /data/input/$tumour_name \
     -normal /data/input/$normal_name \
+    -exclude $exclude \
     -outdir /data/out/cgppindel_output
 
     # Add Allele frequency (AF) and Read depth (DP) onto cgppindel output file
