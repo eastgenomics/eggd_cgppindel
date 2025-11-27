@@ -36,13 +36,6 @@ main() {
     #Add all inputs in the same folder to enable indeces to be found.
     find ~/in -type f -name "*" -print0 | xargs -0 -I {} mv {} ~/input
 
-    # Make option where exclude provided
-    #if [ -z "$exclude" ]; then
-    #    exclude=""
-    #else
-    #    exclude="-exclude '$exclude'"
-    #fi
-
     # Unzip fasta reference
     gzip -d ~/input/$reference_name
 
@@ -63,13 +56,13 @@ main() {
     -simrep /data/input/$simrep_name \
     -genes /data/input/$genes_name \
     -unmatched /data/input/$unmatched_name \
-    -assembly $assembly \
+    -assembly "$assembly" \
     -species Human \
-    -seqtype $seqtype \
+    -seqtype "$seqtype" \
     -filter /data/input/$filter_name \
     -tumour /data/input/$tumour_name \
     -normal /data/input/$normal_name \
-    -exclude $exclude \
+    -exclude "$exclude" \
     -outdir /data/out/cgppindel_output
 
     # Add Allele frequency (AF) and Read depth (DP) onto cgppindel output file
