@@ -17,6 +17,7 @@ main() {
     echo "Value of filter: '$filter'"
     echo "Value of tumour: '$tumour'"
     echo "Value of normal: '$normal'"
+    echo "Value of exclude: '$exclude'"
     
     # Create input/output directories
     mkdir input
@@ -55,12 +56,13 @@ main() {
     -simrep /data/input/$simrep_name \
     -genes /data/input/$genes_name \
     -unmatched /data/input/$unmatched_name \
-    -assembly $assembly \
+    -assembly "$assembly" \
     -species Human \
-    -seqtype $seqtype \
+    -seqtype "$seqtype" \
     -filter /data/input/$filter_name \
     -tumour /data/input/$tumour_name \
     -normal /data/input/$normal_name \
+    -exclude "$exclude" \
     -outdir /data/out/cgppindel_output
 
     # Add Allele frequency (AF) and Read depth (DP) onto cgppindel output file
